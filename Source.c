@@ -27,20 +27,20 @@ int memory_check(block * ptr) {
 
 void memory_init(void* ptr, unsigned int size) {
 	start = ptr;
-	start->size = size - sizeof(struct block) + 1;
+	start->size = size - sizeof(int) + 1;
 	start->next = NULL;
 	start->prev = NULL;
 }
 
 void* memory_alloc(unsigned int required_size) {
 	block *aktualny = start;
-	printf("pustila sa funkcia memory alloc\n");
-	if (required_size % 2 == 1) {
+	printf("pustila sa funkcia memory alloc a hlada miesto pre blok velkosti %d\n",required_size);
+	if (required_size % 2 == 1) {				//pamat sa vzdy zaokruhli smerom hore na parne cislo
 		required_size++;
 	}
 
 	while (aktualny != NULL) {
-		if (aktualny->size % 2 == 1) {
+		if (aktualny->size % 2 == 1) {						//nasli sme blok s rovnakou velkostou
 			if (aktualny->size - 1 == required_size){
 				printf("presne tolko miesta co treba\n\n\n");
 				aktualny->size = aktualny->size - 1;			
@@ -51,39 +51,31 @@ void* memory_alloc(unsigned int required_size) {
 				if (aktualny->prev != NULL) {
 					aktualny->prev->next = aktualny->next;
 				}*/
-				return aktualny + 1;
+
+				return (char*)aktualny + sizeof(int);
 			}
-			else if(aktualny->size > required_size) {				
-				printf("viac miesta ako treba, rozdeli sa\n\n\n");
+			else if(aktualny->size > required_size) {			//nasli sme vacsi blok, zobereme z neho cast
+				printf("viac miesta ako treba  (%d), rozdeli sa\n\n\n",aktualny->size);
 
 				struct block* novy;
-				novy = (char*)aktualny + (required_size + sizeof(struct block));
-				novy->size = aktualny->size - required_size - sizeof(struct block);
+				novy = (char*)aktualny + required_size + sizeof(int);
+				novy->size = aktualny->size - required_size - sizeof(int);
 				aktualny->size = required_size;
-				novy->next = NULL;
-				novy->prev = NULL;
 				/*
-				struct block* temp_prev = aktualny->prev;
-				struct block* temp_next = aktualny->next;
-
-				aktualny->next = temp_next;
-				aktualny->prev = temp_prev;
-
 				novy->next = aktualny->next;
 				novy->prev = aktualny->prev;
-
 				if (aktualny->next) {
 					aktualny->next->prev = novy;
 				}
 				if (aktualny->prev) {
 					aktualny->prev->next = novy;
-				}
-				*/
+				}*/
+				
 				if (start == aktualny) {
 					start = novy;
 				}
 
-				return (aktualny + 1);
+				return (char*)aktualny + 4;
 			}
 			else {
 				;
