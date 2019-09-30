@@ -32,29 +32,6 @@ void memory_init(void* ptr, unsigned int size) {
 	start->prev = NULL;
 }
 
-void zober_cast_pamete_z_velkeho_bloku(struct block* dostatocne_miesto, unsigned int size) {
-	struct block* novy;
-	novy = dostatocne_miesto  + size;
-
-	novy->size = dostatocne_miesto->size - size + 1;
-	novy->next = dostatocne_miesto->next;
-	novy->prev = dostatocne_miesto->prev;
-
-	if (dostatocne_miesto->next) {
-		dostatocne_miesto->next->prev = novy;
-	}
-	if (dostatocne_miesto->prev) {
-		dostatocne_miesto->prev->next = novy;
-	}
-
-	dostatocne_miesto->size = size - 1;
-	dostatocne_miesto->next = novy;
-
-	if (start == dostatocne_miesto) {
-		start = novy;
-	}
-}
-
 void* memory_alloc(unsigned int required_size) {
 	block *aktualny = start;
 	printf("pustila sa funkcia memory alloc\n");
@@ -66,25 +43,28 @@ void* memory_alloc(unsigned int required_size) {
 		if (aktualny->size % 2 == 1) {
 			if (aktualny->size - 1 == required_size){
 				printf("presne tolko miesta co treba\n\n\n");
-				aktualny->size = aktualny->size - 1;					
+				aktualny->size = aktualny->size - 1;			
+				/*
 				if (aktualny->next != NULL) {
 					aktualny->next->prev = aktualny->prev;
 				}
 				if (aktualny->prev != NULL) {
 					aktualny->prev->next = aktualny->next;
-				}
-				return aktualny;
+				}*/
+				return aktualny + 1;
 			}
 			else if(aktualny->size > required_size) {				
 				printf("viac miesta ako treba, rozdeli sa\n\n\n");
 
-				struct block* temp_prev = aktualny->prev;
-				struct block* temp_next = aktualny->next;
-
 				struct block* novy;
 				novy = (char*)aktualny + (required_size + sizeof(struct block));
-
 				novy->size = aktualny->size - required_size - sizeof(struct block);
+				aktualny->size = required_size;
+				novy->next = NULL;
+				novy->prev = NULL;
+				/*
+				struct block* temp_prev = aktualny->prev;
+				struct block* temp_next = aktualny->next;
 
 				aktualny->next = temp_next;
 				aktualny->prev = temp_prev;
@@ -98,10 +78,7 @@ void* memory_alloc(unsigned int required_size) {
 				if (aktualny->prev) {
 					aktualny->prev->next = novy;
 				}
-
-				aktualny->size = required_size;
-				aktualny->next = novy;
-
+				*/
 				if (start == aktualny) {
 					start = novy;
 				}
@@ -129,14 +106,14 @@ int main()
 	//memory_check(start);
 
 	char* pointer = (char*)memory_alloc(3);
-	memset(pointer, 6,3);
+	memset(pointer, 66,3);
 
 	for (int i = 0; i < 50; i++) {
 		printf("%d\n", region[i]);
 	}
 
-	char* pointer2 = (char*)memory_alloc(5);
-	memset(pointer2, 7, 5);
+	char* pointer2 = (char*)memory_alloc(22);
+	memset(pointer2, 77, 22);
 
 	for (int i = 0; i < 50; i++) {
 		printf("%d\n", region[i]);
