@@ -1,7 +1,8 @@
 ﻿  Source.c
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(67,59): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(73,13): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'block *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(92,6): warning C4013:  'exit' undefined; assuming extern returning int
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(101,39): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(106,68): warning C4133:  '==': incompatible types - from 'block *' to 'char *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(59,57): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(84,37): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(104,10): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(105,10): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(105,10): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 2 has type 'char *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(106,75): warning C4133:  '==': incompatible types - from 'char *' to 'block *'
   zadanie1.vcxproj -> C:\Users\drnck\Desktop\workspace\zadanie1\Debug\zadanie1.exe
