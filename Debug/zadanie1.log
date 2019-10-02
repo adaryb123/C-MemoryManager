@@ -1,7 +1,5 @@
 ﻿  Source.c
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(62,57): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(97,41): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(107,10): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'char *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(107,10): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 2 has type 'char *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(121): warning C4716:  'memory_free': must return a value
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(55,57): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(81,37): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(88,66): warning C4133:  '==': incompatible types - from 'block *' to 'char *'
   zadanie1.vcxproj -> C:\Users\drnck\Desktop\workspace\zadanie1\Debug\zadanie1.exe
