@@ -33,6 +33,7 @@ void memory_init(void* ptr, unsigned int size) {
 	start->first_free->size = size - sizeof(hlavicka) - sizeof(block) + 1;
 	start->first_free->next = NULL;
 	start->end = (char*) start + size;
+	//memset(start + 1, 0, size);
 }
 
 void* memory_alloc(unsigned int required_size) {					
@@ -80,15 +81,32 @@ void* memory_alloc(unsigned int required_size) {
 		}
 		aktualny = aktualny->next;
 	}
-	printf("nom asi neni miesto\n");
+	printf("nie je miesto\n");
 	return NULL;
 }
 
-int* memory_free(void* pointer) {							
-			// if (memory_check) ... ok, else - pointer nie je z pola
+int memory_check(void* pointer) {
+	printf("spusta sa funkcia memory check\n");
+	if (pointer <= start || pointer > start->end) {
+		printf("smernik nie je z vyhradeneho pola pamate\n");
+		return 0;
+	}
+/*	if (*((char*)pointer - sizeof(block)) % 2 == 1) {
+		printf("smernik uz je volny\n");
+		return 0;
+	}*/
+	printf("smernik je ok\n");
+	return 1;
+}
+
+int* memory_free(void** pointer) {			
 	printf("pustila sa funkcia memory free\n");
+	if (memory_check(*pointer) == 0) {
+		return 1;
+	}
+	//printf("pustila sa funkcia memory free\n");
 	struct block* novy, * aktualny;
-	novy = (char*)pointer - sizeof(block);
+	novy = (char*)*pointer - sizeof(block);
 	novy->size += 1;
 	/* ulozime uvolneny blok do zoznamu podla adresy */
 	if (novy < start->first_free || start->first_free == NULL) {
@@ -118,6 +136,7 @@ int* memory_free(void* pointer) {
 			aktualny = aktualny->next;
 		}
 	}
+	*pointer = NULL;
 	return 0;
 }
 
@@ -132,40 +151,11 @@ int main()
 	}
 	//memory_check(start);
 
-	char* pointer1 = (char*)memory_alloc(3);
-	memset(pointer1, 99, 3);
-
-	char* pointer2 = (char*)memory_alloc(3);
-	memset(pointer2, 88, 3);
-
-	char* pointer3 = (char*)memory_alloc(3);
-	memset(pointer3, 77, 3);
-
-	char* pointer4 = (char*)memory_alloc(3);
-	memset(pointer4, 66, 3);
-
-	char* pointer5 = (char*)memory_alloc(3);
-	memset(pointer5, 55, 3);
-
-	for (int i = 0; i < N; i++) {
-		printf("%d\n", region[i]);
+	int* pointer1 = (int*)memory_alloc(3*sizeof(int));
+	for (int i = 0; i < 3; i++) {
+		pointer1[i] = 99;
 	}
-
-	memory_free(pointer3);
-	memory_free(pointer1);
-	memory_free(pointer5);
-
-	for (int i = 0; i < N; i++) {
-		printf("%d\n", region[i]);
-	}
-
-	char* pointer6 = (char*)memory_alloc(5);
-	memset(pointer6, 100, 5);
-
-	for (int i = 0; i < N; i++) {
-		printf("%d\n", region[i]);
-	}
-	/*
+	
 	char* pointer2 = (char*)memory_alloc(22);
 	memset(pointer2, 77, 22);
 
@@ -179,31 +169,25 @@ int main()
 	}
 
 	memory_free(pointer2);
+	memory_free(pointer2);
 
 	for (int i = 0; i < N; i++) {
 		printf("%d\n", region[i]);
 	}
 
-	char* pointer3 = (char*)memory_alloc(12);
-	memset(pointer3, 88, 12);
+	char* pointer3 = (char*)memory_alloc(32);
+	memset(pointer3, 98, 32);
 
 	for (int i = 0; i < N; i++) {
 		printf("%d\n", region[i]);
 	}
 
-	char* pointer4 = (char*)memory_alloc(6);
-	memset(pointer4, 1, 6);
+	memory_free(pointer2);
 
 	for (int i = 0; i < N; i++) {
 		printf("%d\n", region[i]);
 	}
-
-	char* pointer5 = (char*)memory_alloc(3);
-	memset(pointer5, 111, 3);
-
-	for (int i = 0; i < N; i++) {
-		printf("%d\n", region[i]);
-	}*/
+	
 
 	/*
 	char* pointer = (char*)memory_alloc(10);
