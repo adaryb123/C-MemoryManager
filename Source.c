@@ -1,14 +1,5 @@
 #include <stdio.h>
-#include <string.h>
 
-/*
-void* memory_alloc(unsigned int size) {
-	;
-}
-int memory_free(void* valid_ptr) {
-	;
-}
-*/
 
 typedef struct hlavicka {					//hlavicka je na zaciatku volnej pamate, obsahuje smernik na prvy volny blok, a smernik na koniec pamate
 	struct block* first_free;
@@ -21,11 +12,6 @@ typedef struct block {
 }block;
 
 hlavicka* start = NULL;				//tento smernik bude vzdy ukazovat na prvy volny blok
-/*
-int memory_check(block * ptr) {
-	printf("\n %d\n", ptr->is_free);
-	return 0;
-}*/
 
 void memory_init(void* ptr, unsigned int size) {
 	start = ptr;
@@ -33,12 +19,11 @@ void memory_init(void* ptr, unsigned int size) {
 	start->first_free->size = size - sizeof(hlavicka) - sizeof(block) + 1;
 	start->first_free->next = NULL;
 	start->end = (char*) start + size;
-	//memset(start + 1, 0, size);
 }
 
 void* memory_alloc(unsigned int required_size) {					
 	block* aktualny = start->first_free;
-	printf("pustila sa funkcia memory alloc a hlada miesto pre blok velkosti %d\n", required_size);
+	//printf("pustila sa funkcia memory alloc a hlada miesto pre blok velkosti %d\n", required_size);
 	if (required_size % 4 == 1) {				//pamat sa vzdy zaokruhli smerom hore na 4
 		required_size+= 3;
 	}
@@ -52,7 +37,7 @@ void* memory_alloc(unsigned int required_size) {
 		if (aktualny->size % 2 == 1) {						
 			if ((aktualny->size - 1 > required_size + sizeof(block) ) && ((char*)aktualny + required_size + sizeof(block)  < start->end)) {		
 				/*nasli sme blok dost velky na to aby sme ho mohli rozdelit a zobrat si iba cast z neho*/
-				printf("viac miesta ako treba  (%d), rozdeli sa\n\n\n", aktualny->size);
+				//printf("viac miesta ako treba  (%d), rozdeli sa\n\n\n", aktualny->size);
 
 				struct block* novy;
 				novy = (char*)aktualny + required_size + sizeof(block);
@@ -67,7 +52,7 @@ void* memory_alloc(unsigned int required_size) {
 			}
 			else if (aktualny->size - 1 >= required_size) {					
 				/*nasli sme blok ktory obsadime cely*/
-				printf("presne tolko miesta co treba\n\n\n");	
+				//printf("presne tolko miesta co treba\n\n\n");	
 				aktualny->size = aktualny->size - 1;
 				if (start->first_free == aktualny) {
 					start->first_free = aktualny->next;
@@ -76,37 +61,33 @@ void* memory_alloc(unsigned int required_size) {
 				return aktualny + 1;
 			}
 			else {
-				printf("nasiel sa blok velkosti %d, co je prilis malo\n", aktualny->size - 1);
+				//printf("nasiel sa blok velkosti %d, co je prilis malo\n", aktualny->size - 1);
 			}
 		}
 		aktualny = aktualny->next;
 	}
-	printf("nie je miesto\n");
+	//printf("nie je miesto\n");
 	return NULL;
 }
 
 int memory_check(void* pointer) {
-	printf("spusta sa funkcia memory check\n");
+	//printf("spusta sa funkcia memory check\n");
 	if (pointer <= start || pointer > start->end) {
-		printf("smernik nie je z vyhradeneho pola pamate\n");
+		//printf("smernik nie je z vyhradeneho pola pamate\n");
 		return 0;
 	}
-/*	if (*((char*)pointer - sizeof(block)) % 2 == 1) {
-		printf("smernik uz je volny\n");
-		return 0;
-	}*/
-	printf("smernik je ok\n");
+	//printf("smernik je ok\n");
 	return 1;
 }
 
-int* memory_free(void** pointer) {			
-	printf("pustila sa funkcia memory free\n");
-	if (memory_check(*pointer) == 0) {
+int memory_free(void* pointer) {			
+	//printf("pustila sa funkcia memory free\n");
+	if (memory_check(pointer) == 0) {
 		return 1;
 	}
 	//printf("pustila sa funkcia memory free\n");
 	struct block* novy, * aktualny;
-	novy = (char*)*pointer - sizeof(block);
+	novy = (char*)pointer - sizeof(block);
 	novy->size += 1;
 	/* ulozime uvolneny blok do zoznamu podla adresy */
 	if (novy < start->first_free || start->first_free == NULL) {
@@ -117,29 +98,31 @@ int* memory_free(void** pointer) {
 		aktualny = start->first_free;
 		while (aktualny->next != NULL) {
 			if (novy > aktualny && novy < aktualny->next) {
+				novy->next = aktualny->next;
+				aktualny->next = novy;
 				break;
 			}
 			aktualny = aktualny->next;
 		}
-		novy->next = aktualny->next;
-		aktualny->next = novy;
 	}
 	/*tato cast spaja volne bloky co su vedla seba*/
 	aktualny = start->first_free;
-	while (aktualny->next != NULL) {
+	while (aktualny->next) {
+		//printf("%d\n",aktualny->next);
 		if (aktualny->next == (char*)aktualny + aktualny->size + sizeof(block) - 1) {
-			printf("merge\n");
+			//printf("merge\n");
 			aktualny->size += aktualny->next->size + sizeof(block) - 1;
 			aktualny->next = aktualny->next->next;
 		}
 		else {
 			aktualny = aktualny->next;
+			//printf("e\n");
 		}
 	}
-	*pointer = NULL;
+	pointer = NULL;
 	return 0;
 }
-
+/*
 int main()
 {
 	int N = 100;
@@ -195,5 +178,5 @@ int main()
 		memset(pointer, 0, 10);
 	if (pointer)
 		memory_free(pointer);*/
-	return 0;
-}
+	//return 0;
+//}*/

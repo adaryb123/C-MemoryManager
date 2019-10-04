@@ -1,17 +1,8 @@
 ﻿  Source.c
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(32,31): warning C4133:  '=': incompatible types - from 'hlavicka *' to 'block *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(53,127): warning C4133:  '<': incompatible types - from 'void *' to 'char *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(58,59): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(90,23): warning C4133:  '<=': incompatible types - from 'hlavicka *' to 'void *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(105,11): warning C4047:  'return': 'int *' differs in levels of indirection from 'int'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(109,40): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(130,77): warning C4133:  '==': incompatible types - from 'char *' to 'block *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(165,22): warning C4047:  'function': 'void **' differs in levels of indirection from 'int *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(165,22): warning C4022:  'memory_free': pointer mismatch for actual parameter 1
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(171,22): warning C4047:  'function': 'void **' differs in levels of indirection from 'char *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(171,22): warning C4022:  'memory_free': pointer mismatch for actual parameter 1
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(172,22): warning C4047:  'function': 'void **' differs in levels of indirection from 'char *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(172,22): warning C4022:  'memory_free': pointer mismatch for actual parameter 1
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(185,22): warning C4047:  'function': 'void **' differs in levels of indirection from 'char *'
-C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(185,22): warning C4022:  'memory_free': pointer mismatch for actual parameter 1
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(18,31): warning C4133:  '=': incompatible types - from 'hlavicka *' to 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(38,127): warning C4133:  '<': incompatible types - from 'void *' to 'char *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(43,59): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(75,23): warning C4133:  '<=': incompatible types - from 'hlavicka *' to 'void *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(90,39): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(112,77): warning C4133:  '==': incompatible types - from 'char *' to 'block *'
   zadanie1.vcxproj -> C:\Users\drnck\Desktop\workspace\zadanie1\Debug\zadanie1.exe
