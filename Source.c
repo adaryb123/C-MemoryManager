@@ -22,7 +22,7 @@ void memory_init(void* ptr, unsigned int size) {
 }
 
 void* memory_alloc(unsigned int required_size) {					
-	block* aktualny = start->first_free;
+	block* aktualny = start->first_free , *prev = NULL;
 	//printf("pustila sa funkcia memory alloc a hlada miesto pre blok velkosti %d\n", required_size);
 	if (required_size % 8 != 0){
 		required_size += (8 - required_size % 8);
@@ -42,6 +42,10 @@ void* memory_alloc(unsigned int required_size) {
 				if (start->first_free == aktualny) {
 					start->first_free = novy;
 				}
+				if (prev != NULL) {
+					prev->next = novy;
+				}
+	
 				return (char*)aktualny + sizeof(int);
 			}
 			else if (aktualny->size - 1 >= required_size) {					
@@ -51,12 +55,15 @@ void* memory_alloc(unsigned int required_size) {
 				if (start->first_free == aktualny) {
 					start->first_free = aktualny->next;
 				}
-				aktualny->next = NULL;
+				if (prev != NULL) {
+					prev->next = aktualny->next;
+				}
 				return (char*)aktualny + sizeof(int);
 			}
 			else {
 				//printf("nasiel sa blok velkosti %d, co je prilis malo\n", aktualny->size - 1);
 			}
+			prev = aktualny;
 		}
 		aktualny = aktualny->next;
 	}
@@ -90,20 +97,29 @@ int memory_free(void* pointer) {
 	}
 	else {
 		aktualny = start->first_free;
-		while (aktualny->next != NULL) {
-			if (novy > aktualny && novy < aktualny->next) {
-				novy->next = aktualny->next;
-				aktualny->next = novy;
-				break;
+		if (aktualny->next == NULL) {
+			novy->next = aktualny->next;
+			aktualny->next = novy;
+		}
+		else{
+			while (aktualny->next != NULL) {
+				if (novy > aktualny && novy < aktualny->next) {
+					novy->next = aktualny->next;
+					aktualny->next = novy;
+					break;
+				}
+				aktualny = aktualny->next;
 			}
-			aktualny = aktualny->next;
 		}
 	}
 	/*tato cast spaja volne bloky co su vedla seba*/
 	aktualny = start->first_free;
 	while (aktualny->next) {
+		if (aktualny->next->size % 2 == 0) {
+			aktualny->next = NULL;
+		}
 		//printf("%d\n",aktualny->next);
-		if (aktualny->next == (char*)aktualny + aktualny->size + sizeof(int) - 1) {
+		else if (aktualny->next == (char*)aktualny + aktualny->size + sizeof(int) - 1) {
 			//printf("merge\n");
 			aktualny->size += aktualny->next->size + sizeof(int) - 1;
 			aktualny->next = aktualny->next->next;

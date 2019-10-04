@@ -1,6 +1,8 @@
-﻿  Main.c
-C:\Users\drnck\Desktop\workspace\zadanie1\Main.c(8,13): warning C4013:  'memory_init' undefined; assuming extern returning int
-C:\Users\drnck\Desktop\workspace\zadanie1\Main.c(10,37): warning C4013:  'memory_alloc' undefined; assuming extern returning int
-C:\Users\drnck\Desktop\workspace\zadanie1\Main.c(16,13): warning C4013:  'memory_free' undefined; assuming extern returning int
-C:\Users\drnck\Desktop\workspace\zadanie1\Main.c(10,1): warning C4133:  'initializing': incompatible types - from 'char *' to 'int *'
+﻿  Source.c
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(18,31): warning C4133:  '=': incompatible types - from 'hlavicka *' to 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(32,137): warning C4133:  '<': incompatible types - from 'void *' to 'char *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(37,57): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(76,23): warning C4133:  '<=': incompatible types - from 'hlavicka *' to 'void *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(91,37): warning C4133:  '=': incompatible types - from 'char *' to 'block *'
+C:\Users\drnck\Desktop\workspace\zadanie1\Source.c(122,80): warning C4133:  '==': incompatible types - from 'char *' to 'block *'
   zadanie1.vcxproj -> C:\Users\drnck\Desktop\workspace\zadanie1\Debug\zadanie1.exe
