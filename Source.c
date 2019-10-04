@@ -16,7 +16,7 @@ hlavicka* start = NULL;				//tento smernik bude vzdy ukazovat na prvy volny blok
 void memory_init(void* ptr, unsigned int size) {
 	start = ptr;
 	start->first_free = start + 1;
-	start->first_free->size = size - sizeof(hlavicka) - sizeof(block) + 1;
+	start->first_free->size = size - sizeof(hlavicka) - sizeof(int) + 1;
 	start->first_free->next = NULL;
 	start->end = (char*) start + size;
 }
@@ -24,31 +24,25 @@ void memory_init(void* ptr, unsigned int size) {
 void* memory_alloc(unsigned int required_size) {					
 	block* aktualny = start->first_free;
 	//printf("pustila sa funkcia memory alloc a hlada miesto pre blok velkosti %d\n", required_size);
-	if (required_size % 4 == 1) {				//pamat sa vzdy zaokruhli smerom hore na 4
-		required_size+= 3;
-	}
-	else if (required_size % 4 == 2) {				
-		required_size += 2;
-	}
-	else if (required_size % 4 == 3) {				
-		required_size += 1;
+	if (required_size % 8 != 0){
+		required_size += (8 - required_size % 8);
 	}
 	while (aktualny != NULL) {
 		if (aktualny->size % 2 == 1) {						
-			if ((aktualny->size - 1 > required_size + sizeof(block) ) && ((char*)aktualny + required_size + sizeof(block)  < start->end)) {		
+			if ((aktualny->size - 1 > required_size + sizeof(int)) && ((char*)aktualny + sizeof(int) + required_size + sizeof(block) < start->end)) {
 				/*nasli sme blok dost velky na to aby sme ho mohli rozdelit a zobrat si iba cast z neho*/
 				//printf("viac miesta ako treba  (%d), rozdeli sa\n\n\n", aktualny->size);
 
 				struct block* novy;
-				novy = (char*)aktualny + required_size + sizeof(block);
-				novy->size = aktualny->size - required_size - sizeof(block);
+				novy = (char*)aktualny + required_size + sizeof(int);
+				novy->size = aktualny->size - required_size - sizeof(int);
 				aktualny->size = required_size;
 				novy->next = aktualny->next;
 			
 				if (start->first_free == aktualny) {
 					start->first_free = novy;
 				}
-				return aktualny + 1;
+				return (char*)aktualny + sizeof(int);
 			}
 			else if (aktualny->size - 1 >= required_size) {					
 				/*nasli sme blok ktory obsadime cely*/
@@ -58,7 +52,7 @@ void* memory_alloc(unsigned int required_size) {
 					start->first_free = aktualny->next;
 				}
 				aktualny->next = NULL;
-				return aktualny + 1;
+				return (char*)aktualny + sizeof(int);
 			}
 			else {
 				//printf("nasiel sa blok velkosti %d, co je prilis malo\n", aktualny->size - 1);
@@ -87,7 +81,7 @@ int memory_free(void* pointer) {
 	}
 	//printf("pustila sa funkcia memory free\n");
 	struct block* novy, * aktualny;
-	novy = (char*)pointer - sizeof(block);
+	novy = (char*)pointer - sizeof(int);
 	novy->size += 1;
 	/* ulozime uvolneny blok do zoznamu podla adresy */
 	if (novy < start->first_free || start->first_free == NULL) {
@@ -109,9 +103,9 @@ int memory_free(void* pointer) {
 	aktualny = start->first_free;
 	while (aktualny->next) {
 		//printf("%d\n",aktualny->next);
-		if (aktualny->next == (char*)aktualny + aktualny->size + sizeof(block) - 1) {
+		if (aktualny->next == (char*)aktualny + aktualny->size + sizeof(int) - 1) {
 			//printf("merge\n");
-			aktualny->size += aktualny->next->size + sizeof(block) - 1;
+			aktualny->size += aktualny->next->size + sizeof(int) - 1;
 			aktualny->next = aktualny->next->next;
 		}
 		else {
